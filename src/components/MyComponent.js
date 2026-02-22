@@ -3,6 +3,15 @@ import Userinfor from "./Userinfor";
 import DisplayInfo from "./DisplayInfo";
 
 class MyComponent extends React.Component {
+  state = {
+    listUsers: [
+      { id: 1, name: "Hoi Dan It", age: 30 },
+      { id: 2, name: "Eric", age: 36 },
+      { id: 3, name: "HarryPhamDev", age: 342 },
+      { id: 4, name: "Hoi Dan It", age: 30 },
+    ],
+  };
+
   // JSX
 
   render() {
@@ -13,11 +22,10 @@ class MyComponent extends React.Component {
       <div>
         <Userinfor />
         <br />
-        <DisplayInfo name="Hoi Dan IT" age="266" />
 
-        <hr />
+        <br />
 
-        <DisplayInfo name="Pham Nam" myArray={myArray} />
+        <DisplayInfo listUsers={this.state.listUsers} />
       </div>
     );
   }

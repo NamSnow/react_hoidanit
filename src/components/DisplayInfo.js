@@ -2,12 +2,31 @@ import React, { Component } from "react";
 
 export class DisplayInfo extends React.Component {
   render() {
-    const { age, name } = this.props;
+    const { listUsers } = this.props;
 
     return (
       <div>
-        <div>My name is {name}</div>
-        <div>My age is {age}</div>
+        {listUsers.map((item, index) => {
+          return (
+            <div key={item.id}>
+              <div>My name is {item.name}</div>
+              <div>My age is {item.age}</div>
+            </div>
+          );
+        })}
+
+        {/* <div>
+          <div>My name is {name}</div>
+          <div>My age is {age}</div>
+        </div>
+        <div>
+          <div>My name is {name}</div>
+          <div>My age is {age}</div>
+        </div>
+        <div>
+          <div>My name is {name}</div>
+          <div>My age is {age}</div>
+        </div> */}
       </div>
     );
   }
