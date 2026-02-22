@@ -37,6 +37,7 @@ export class DisplayInfo extends React.Component {
                 <div key={item.id} className={item.age < 18 ? "green" : "red"}>
                   <div>My name is {item.name}</div>
                   <div>My age is {item.age}</div>
+                  <hr />
                 </div>
               );
             })}

@@ -3,14 +3,14 @@ import PropTypes from "prop-types";
 
 class Userinfor extends React.Component {
   state = {
-    name: "NameA3",
+    name: "",
     address: "Hoi Dan It",
-    age: 26,
+    age: "",
   };
 
   handleClick(event) {
     console.log("Click me");
-    console.log("random ", this.state.name);
+    // console.log("random ", this.state.name);
 
     this.setState({
       name: "Eric",
@@ -18,7 +18,7 @@ class Userinfor extends React.Component {
   }
 
   handleOnChangeInput = (event) => {
-    console.log(event, event.target.value);
+    // console.log(event, event.target.value);
 
     this.setState({
       name: event.target.value,
@@ -33,7 +33,12 @@ class Userinfor extends React.Component {
 
   handleOnSubmit = (event) => {
     event.preventDefault();
-    console.log(this.state);
+
+    this.props.handleAddNewUser({
+      id: Math.floor(Math.random() * 100 + 1) + "-random",
+      name: this.state.name,
+      age: this.state.age,
+    });
   };
 
   render() {
