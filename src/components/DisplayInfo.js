@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "./scss/DisplayInfo.scss";
 
 export class DisplayInfo extends React.Component {
   state = {
@@ -16,7 +17,7 @@ export class DisplayInfo extends React.Component {
     // console.log(listUsers);
 
     return (
-      <div>
+      <div className="display-info-container">
         <div>
           <span
             style={{ cursor: "pointer" }}
