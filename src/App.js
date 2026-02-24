@@ -2,11 +2,11 @@ import logo from "./logo.svg";
 import "./App.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { increaseCounter, decreaseCounter } from "./redux/action/counterAction";
-import MyComponent from "./components/MyComponent";
+import MyComponent from "./components/js/MyComponent.js";
 
 const App = () => {
   return (
-    <div>
+    <div className="app-container">
       <MyComponent />
     </div>
   );

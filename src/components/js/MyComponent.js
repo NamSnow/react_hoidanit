@@ -1,6 +1,6 @@
 import React from "react";
-import AddUserinfor from "./AddUserinfor";
-import DisplayInfo from "./DisplayInfo";
+import AddUserinfor from "./AddUserinfor.js";
+import DisplayInfo from "./DisplayInfo.js";
 
 class MyComponent extends React.Component {
   state = {
@@ -18,20 +18,35 @@ class MyComponent extends React.Component {
     });
   };
 
+  handleDeleteUser = (userId) => {
+    let listUserClone = [...this.state.listUsers];
+    listUserClone = listUserClone.filter((item) => item.id !== userId);
+    this.setState({
+      listUsers: listUserClone,
+    });
+  };
+
   // JSX
 
   render() {
     const myAge = 50;
     const myArray = ["ab", "c", "d"];
 
+    const test = { name: "Eric", age: 16 };
+
     return (
       <div>
+        {JSON.stringify(test)}
+
         <AddUserinfor handleAddNewUser={this.handleAddNewUser} />
         <br />
 
         <br />
 
-        <DisplayInfo listUsers={this.state.listUsers} />
+        <DisplayInfo
+          listUsers={this.state.listUsers}
+          handleDeleteUser={this.handleDeleteUser}
+        />
       </div>
     );
   }
