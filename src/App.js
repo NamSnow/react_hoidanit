@@ -1,15 +1,7 @@
-import logo from "./logo.svg";
 import "./App.scss";
-import { useDispatch, useSelector } from "react-redux";
-import { increaseCounter, decreaseCounter } from "./redux/action/counterAction";
-import MyComponent from "./components/js/MyComponent.js";
 
 const App = () => {
-  return (
-    <div className="app-container">
-      <MyComponent />
-    </div>
-  );
+  return <div className="bg-red-500 text-blue-500">Hello World</div>;
 };
 
 export default App;
