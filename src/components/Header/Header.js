@@ -8,7 +8,9 @@ const Header = () => {
   return (
     <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
       <Container>
-        <Navbar.Brand href="#home">Hoài Nam</Navbar.Brand>
+        <NavLink to="/" className="navbar-brand">
+          Hoi Dan IT
+        </NavLink>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
@@ -25,9 +27,9 @@ const Header = () => {
 
           <Nav>
             <NavDropdown title="Setting" id="collapsible-nav-dropdown">
-              <NavDropdown.Item href="/login">Log in</NavDropdown.Item>
-              <NavDropdown.Item href="/logout">Log out</NavDropdown.Item>
-              <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
+              <NavDropdown.Item>Log in</NavDropdown.Item>
+              <NavDropdown.Item>Log out</NavDropdown.Item>
+              <NavDropdown.Item>Profile</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
