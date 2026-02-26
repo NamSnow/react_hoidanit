@@ -1,4 +1,3 @@
-// import "react-pro-sidebar/dist/css/styles.css";
 import {
   Sidebar,
   Menu,
@@ -7,15 +6,13 @@ import {
   ProSidebarProvider,
 } from "react-pro-sidebar";
 
-import {
-  FaTachometerAlt,
-  FaGem,
-  FaGithub,
-  FaRegLaughWink,
-} from "react-icons/fa";
-import sidebarBg from "../../assets/bg2.jpg";
+import { FaGem } from "react-icons/fa";
+
 import { DiReact } from "react-icons/di";
 import { MdDashboard } from "react-icons/md";
+
+import sidebarBg from "../../assets/bg2.jpg";
+import "./SideBar.scss";
 
 const SideBar = (props) => {
   const { image, collapsed, toggled, handleToggleSidebar } = props;
@@ -40,53 +37,45 @@ const SideBar = (props) => {
             whiteSpace: "nowrap",
           }}
         >
-          <DiReact size={"3em"} color={"#00bfff"} />
-          {!collapsed && <span>Hoi Dan IT</span>}
+          <DiReact size={"3em"} color={"00bfff"} />
+          <span>Hoi Dan IT</span>
         </div>
 
         <Menu iconShape="circle">
-          <MenuItem
-            icon={<FaTachometerAlt />}
-            suffix={<span className="badge red">New</span>}
-          >
-            Dashboard
-          </MenuItem>
+          <MenuItem icon={<MdDashboard />}>Dashboard</MenuItem>
         </Menu>
         <Menu iconShape="circle">
-          <SubMenu
-            suffix={<span className="badge yellow">3</span>}
-            icon={<FaRegLaughWink />}
-            label="Features"
-          >
-            <MenuItem>Quản lý Users</MenuItem>
-            <MenuItem>Quản lý Bài Quiz</MenuItem>
-            <MenuItem>Quản lý Câu Hỏi</MenuItem>
+          <SubMenu icon={<FaGem />} label="Features">
+            <MenuItem> Quản lý Users</MenuItem>
+            <MenuItem> Quản lý Bài Quiz</MenuItem>
+            <MenuItem> Quản lý Câu Hỏi</MenuItem>
           </SubMenu>
         </Menu>
 
-        <div
-          className="sidebar-btn-wrapper"
-          style={{
-            padding: "20px 24px",
-            textAlign: "center",
-          }}
-        >
-          <a
-            href="https://github.com/azouaoui-med/react-pro-sidebar"
-            target="_blank"
-            className="sidebar-btn"
-            rel="noopener noreferrer"
+        <div style={{ textAlign: "center" }}>
+          <div
+            className="sidebar-btn-wrapper"
+            style={{
+              padding: "20px 24px",
+            }}
           >
-            <span
-              style={{
-                whiteSpace: "nowrap",
-                textOverflow: "ellipsis",
-                overflow: "hidden",
-              }}
+            <a
+              href="https://haryphamdev.github.io/hoidanit-udemy/"
+              target="_blank"
+              className="sidebar-btn"
+              rel="noopener noreferrer"
             >
-              &#169; {!collapsed && <span>Hoi Dan IT Udemy</span>}
-            </span>
-          </a>
+              <span
+                style={{
+                  whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
+                  overflow: "hidden",
+                }}
+              >
+                &#169; Hỏi Dân IT Udemy
+              </span>
+            </a>
+          </div>
         </div>
       </Sidebar>
     </ProSidebarProvider>
