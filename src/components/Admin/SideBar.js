@@ -7,12 +7,11 @@ import {
 } from "react-pro-sidebar";
 
 import { FaGem } from "react-icons/fa";
-
 import { DiReact } from "react-icons/di";
 import { MdDashboard } from "react-icons/md";
-
 import sidebarBg from "../../assets/bg2.jpg";
 import "./SideBar.scss";
+import { Link } from "react-router-dom";
 
 const SideBar = (props) => {
   const { image, collapsed, toggled, handleToggleSidebar } = props;
@@ -42,13 +41,24 @@ const SideBar = (props) => {
         </div>
 
         <Menu iconShape="circle">
-          <MenuItem icon={<MdDashboard />}>Dashboard</MenuItem>
+          <MenuItem icon={<MdDashboard />} component={<Link to="/admin" />}>
+            Dashboard
+          </MenuItem>
         </Menu>
         <Menu iconShape="circle">
           <SubMenu icon={<FaGem />} label="Features">
-            <MenuItem> Quản lý Users</MenuItem>
-            <MenuItem> Quản lý Bài Quiz</MenuItem>
-            <MenuItem> Quản lý Câu Hỏi</MenuItem>
+            <MenuItem component={<Link to="/admin/manage-users" />}>
+              {" "}
+              Quản lý Users
+            </MenuItem>
+            <MenuItem component={<Link to="/calendar" />}>
+              {" "}
+              Quản lý Bài Quiz
+            </MenuItem>
+            <MenuItem component={<Link to="/calendar" />}>
+              {" "}
+              Quản lý Câu Hỏi
+            </MenuItem>
           </SubMenu>
         </Menu>
 
