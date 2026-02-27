@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 const SideBar = (props) => {
   const { image, collapsed, toggled, handleToggleSidebar } = props;
   return (
-    <ProSidebarProvider>
+    <div>
       <Sidebar
         image={sidebarBg}
         collapsed={collapsed}
@@ -88,7 +88,7 @@ const SideBar = (props) => {
           </div>
         </div>
       </Sidebar>
-    </ProSidebarProvider>
+    </div>
   );
 };
 
