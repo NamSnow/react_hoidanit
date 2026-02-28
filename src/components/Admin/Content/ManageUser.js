@@ -10,6 +10,8 @@ import ModaiUpdateUser from "./ModaiUpdateUser";
 const ManageUser = (props) => {
   const [showModalCreateUser, setShowModalCreateUser] = useState(false);
   const [showModalUpdateUser, setShowModalUpdateUser] = useState(false);
+  const [dataUpdate, setDataUpdate] = useState([]);
+
   const [listUsers, setListUsers] = useState([]);
 
   useEffect(() => {
@@ -22,6 +24,11 @@ const ManageUser = (props) => {
     if (res.EC === 0) {
       setListUsers(res.DT);
     }
+  };
+
+  const handleClickBtnUpdateUser = (user) => {
+    setShowModalUpdateUser(true);
+    setDataUpdate(user);
   };
 
   return (
@@ -39,7 +46,10 @@ const ManageUser = (props) => {
         </div>
 
         <div className="table-users-container">
-          <TableUser listUsers={listUsers} />
+          <TableUser
+            listUsers={listUsers}
+            handleClickBtnUpdateUser={handleClickBtnUpdateUser}
+          />
         </div>
 
         <ModalCreateUser
@@ -48,7 +58,11 @@ const ManageUser = (props) => {
           fetchListUsers={fetchListUsers}
         />
 
-        <ModaiUpdateUser />
+        <ModaiUpdateUser
+          show={showModalUpdateUser}
+          setShow={setShowModalUpdateUser}
+          dataUpdate={dataUpdate}
+        />
       </div>
     </div>
   );

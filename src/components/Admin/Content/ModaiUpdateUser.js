@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FcPlus } from "react-icons/fc";
 import { toast } from "react-toastify";
 import { postCreateNewUser } from "../../../services/apiServices.js";
+import _ from "lodash";
 
 const ModaiUpdateUser = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, dataUpdate } = props;
 
   const handleClose = () => {
     setShow(false);
@@ -24,6 +25,21 @@ const ModaiUpdateUser = (props) => {
   const [role, setRole] = useState("USER");
   const [image, setImage] = useState(null);
   const [previewImage, setPreviewImage] = useState("");
+
+  useEffect(() => {
+    console.log("run effect", dataUpdate);
+
+    if (!_.isEmpty(dataUpdate)) {
+      // update state
+      setEmail(dataUpdate.email);
+      setUsername(dataUpdate.username);
+      setRole(dataUpdate.role);
+      setImage("");
+      if (dataUpdate.image) {
+        setPreviewImage(`data:image/jpeg;base64,${dataUpdate.image}`);
+      }
+    }
+  }, [dataUpdate]);
 
   const handleUploadImage = (event) => {
     if (event.target && event.target.files && event.target.files[0]) {
@@ -70,6 +86,8 @@ const ModaiUpdateUser = (props) => {
     }
   };
 
+  console.log("Check render: datauodate", dataUpdate);
+
   return (
     <>
       <Modal
@@ -80,7 +98,7 @@ const ModaiUpdateUser = (props) => {
         className="modal-add-user"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Add new users</Modal.Title>
+          <Modal.Title>Update users</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form className="row g-3">
@@ -90,6 +108,7 @@ const ModaiUpdateUser = (props) => {
                 type="email"
                 className="form-control"
                 value={email}
+                disabled
                 onChange={(event) => setEmail(event.target.value)}
               />
             </div>
@@ -99,6 +118,7 @@ const ModaiUpdateUser = (props) => {
                 type="password"
                 className="form-control"
                 value={password}
+                disabled
                 onChange={(event) => setPassword(event.target.value)}
               />
             </div>
