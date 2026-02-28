@@ -5,7 +5,7 @@ import { FcPlus } from "react-icons/fc";
 import { toast } from "react-toastify";
 import { postCreateNewUser } from "../../../services/apiServices.js";
 
-const ModalCreateUser = (props) => {
+const ModaiUpdateUser = (props) => {
   const { show, setShow } = props;
 
   const handleClose = () => {
@@ -157,4 +157,4 @@ const ModalCreateUser = (props) => {
   );
 };
 
-export default ModalCreateUser;
+export default ModaiUpdateUser;
