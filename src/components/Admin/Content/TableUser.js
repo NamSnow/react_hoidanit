@@ -32,7 +32,12 @@ const TableUser = (props) => {
                     <img src={item.image} />
                   </td> */}
                   <td className="d-flex gap-2">
-                    <button className="btn btn-secondary">View</button>
+                    <button
+                      className="btn btn-secondary"
+                      onClick={() => props.handleClickBtnViewUser(item)}
+                    >
+                      View
+                    </button>
                     <button
                       className="btn btn-warning"
                       onClick={() => props.handleClickBtnUpdateUser(item)}
