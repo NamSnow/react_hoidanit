@@ -32,7 +32,7 @@ const ModaiViewUser = (props) => {
   const [previewImage, setPreviewImage] = useState("");
 
   useEffect(() => {
-    console.log("run effect", dataUpdate);
+    // console.log("run effect", dataUpdate);
 
     if (!_.isEmpty(dataUpdate)) {
       // update state
@@ -85,7 +85,7 @@ const ModaiViewUser = (props) => {
     }
   };
 
-  console.log("Check render: datauodate", dataUpdate);
+  // console.log("Check render: datauodate", dataUpdate);
 
   return (
     <>

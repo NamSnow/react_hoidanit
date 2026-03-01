@@ -12,8 +12,10 @@ import ModalDeleteUser from "./ModalDeleteUser";
 const ManageUser = (props) => {
   const [showModalCreateUser, setShowModalCreateUser] = useState(false);
   const [showModalUpdateUser, setShowModalUpdateUser] = useState(false);
+  const [showModalDeleteUser, setShowModalDeleteUser] = useState(false);
   const [showModalViewUser, setShowModalViewUser] = useState(false);
   const [dataUpdate, setDataUpdate] = useState([]);
+  const [dataDelete, setDataDelete] = useState([]);
 
   const [listUsers, setListUsers] = useState([]);
 
@@ -39,6 +41,11 @@ const ManageUser = (props) => {
     setDataUpdate(user);
   };
 
+  const handleClickBtnDeleteUser = (user) => {
+    setShowModalDeleteUser(true);
+    setDataDelete(user);
+  };
+
   const resetUpdateData = () => {
     setDataUpdate({});
   };
@@ -62,6 +69,7 @@ const ManageUser = (props) => {
             listUsers={listUsers}
             handleClickBtnUpdateUser={handleClickBtnUpdateUser}
             handleClickBtnViewUser={handleClickBtnViewUser}
+            handleClickBtnDeleteUser={handleClickBtnDeleteUser}
           />
         </div>
 
@@ -85,6 +93,12 @@ const ManageUser = (props) => {
           dataUpdate={dataUpdate}
           fetchListUsers={fetchListUsers}
           resetUpdateData={resetUpdateData}
+        />
+
+        <ModalDeleteUser
+          show={showModalDeleteUser}
+          setShow={setShowModalDeleteUser}
+          dataDelete={dataDelete}
         />
       </div>
     </div>
