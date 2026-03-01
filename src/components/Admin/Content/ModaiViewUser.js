@@ -144,17 +144,14 @@ const ModaiViewUser = (props) => {
               </select>
             </div>
             <div className="col-md-12">
-              <label
-                className="form-label label-upload"
-                htmlFor="labelUpload"
-                disabled
-              >
+              <label className="form-label label-upload" htmlFor="labelUpload">
                 <FcPlus /> Upload File Image
               </label>
               <input
                 type="file"
                 className="form-control"
                 hidden
+                disabled
                 id="labelUpload"
                 onChange={(event) => handleUploadImage(event)}
               />
