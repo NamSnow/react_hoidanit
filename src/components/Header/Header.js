@@ -35,7 +35,9 @@ const Header = () => {
             <button className="btn-login" onClick={() => handleLogin()}>
               Log in
             </button>
-            <button className="btn-signup">Sign up</button>
+            <button className="btn-signup" onClick={() => navigate("/signup")}>
+              Sign up
+            </button>
 
             {/* <NavDropdown title="Setting" id="collapsible-nav-dropdown">
               <NavDropdown.Item>Log in</NavDropdown.Item>

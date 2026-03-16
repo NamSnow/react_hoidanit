@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import "./Login.scss";
 import { useNavigate } from "react-router-dom";
-import { postLogin } from "../../services/apiServices";
 import { toast } from "react-toastify";
+import { postSignup } from "../../services/apiServices";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-const Login = (props) => {
+const Signup = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [isShowPassword, setIsShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const validateEmail = (email) => {
@@ -17,8 +20,7 @@ const Login = (props) => {
       );
   };
 
-  const handleLogin = async () => {
-    // validate
+  const handleSignup = async () => {
     const isValidEmail = validateEmail(email);
 
     if (!isValidEmail) {
@@ -31,31 +33,31 @@ const Login = (props) => {
       return;
     }
 
-    // submit apis
-    let data = await postLogin(email, password);
-
+    let data = await postSignup(email, password, username);
     console.log(data, data, data.EC);
-
     if (data && data.EC === 0) {
       toast.success(data.EM);
       navigate("/");
     }
-
     if (data && +data.EC !== 0) {
       toast.error(data.EM);
     }
   };
 
+  const handleIsShowPassword = () => {
+    setIsShowPassword(!isShowPassword);
+  };
+
   return (
     <div className="login-container">
       <div className="header">
-        <span>Don't have an account yet?</span>
+        <span>You have an account yet?</span>
         <button
           onClick={() => {
-            navigate("/signup");
+            navigate("/login");
           }}
         >
-          Sign up
+          Login
         </button>
       </div>
 
@@ -65,7 +67,7 @@ const Login = (props) => {
 
       <div className="content-form col-4 mx-auto">
         <div className="form-group">
-          <label>Email</label>
+          <label>Email (*)</label>
           <input
             type={"email"}
             className="form-control"
@@ -75,18 +77,43 @@ const Login = (props) => {
         </div>
 
         <div className="form-group">
-          <label>Password</label>
+          <label>Username</label>
           <input
-            type={"password"}
+            type={"username"}
             className="form-control"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </div>
 
-        <span className="forgot-password">Forgot password</span>
-        <button className="btn-submit" onClick={() => handleLogin()}>
-          Login
+        <div className="form-group">
+          <label>Password (*)</label>
+          <div className="position-relative">
+            <input
+              type={isShowPassword ? "text" : "password"}
+              className="form-control pe-5"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+
+            {isShowPassword ? (
+              <FaEye
+                className="position-absolute top-50 end-0 translate-middle-y me-3"
+                style={{ cursor: "pointer" }}
+                onClick={() => handleIsShowPassword()}
+              />
+            ) : (
+              <FaEyeSlash
+                className="position-absolute top-50 end-0 translate-middle-y me-3"
+                style={{ cursor: "pointer" }}
+                onClick={() => handleIsShowPassword()}
+              />
+            )}
+          </div>
+        </div>
+
+        <button className="btn-submit" onClick={() => handleSignup()}>
+          Signup
         </button>
 
         <div className="text-center">
@@ -104,4 +131,4 @@ const Login = (props) => {
   );
 };
 
-export default Login;
+export default Signup;
