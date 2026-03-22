@@ -1,13 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { getDataQuiz } from "../../services/apiServices";
 import _ from "lodash";
 import "./DetailQuiz.scss";
+import Question from "./Question";
 
 const DetailQuiz = (props) => {
   const params = useParams();
   const location = useLocation();
   const quizId = params.id;
+
+  const [dataQuiz, setDataQuiz] = useState([]);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     fetchQuestions();
@@ -38,7 +42,20 @@ const DetailQuiz = (props) => {
           return { questionId: key, answers, questionDescription, image };
         })
         .value();
-      console.log(data);
+      setDataQuiz(data);
+    }
+  };
+
+  console.log("Check data quiz", dataQuiz);
+
+  const handlePrev = () => {
+    if (index - 1 < 0) return;
+    setIndex(index - 1);
+  };
+
+  const handleNext = () => {
+    if (dataQuiz && dataQuiz.length > index + 1) {
+      setIndex(index + 1);
     }
   };
 
@@ -56,18 +73,19 @@ const DetailQuiz = (props) => {
         </div>
 
         <div className="q-content">
-          <div className="question">Question 1: How aer you</div>
-
-          <div className="answer">
-            <div>A. 1233</div>
-            <div>B. 1233</div>
-            <div>C. 1233</div>
-          </div>
+          <Question
+            index={index}
+            data={dataQuiz && dataQuiz.length > 0 ? dataQuiz[index] : []}
+          />
         </div>
 
-        <div className="footer d-flex">
-          <button className="btn btn-primary">Prev</button>
-          <button className="btn btn-secondary">Next</button>
+        <div className="footer">
+          <button className="btn btn-primary" onClick={() => handlePrev()}>
+            Prev
+          </button>
+          <button className="btn btn-secondary" onClick={() => handleNext()}>
+            Next
+          </button>
         </div>
       </div>
 
