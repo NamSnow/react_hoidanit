@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { getDataQuiz } from "../../services/apiServices";
+import { getDataQuiz, postSubmitQuiz } from "../../services/apiServices";
 import _ from "lodash";
 import "./DetailQuiz.scss";
 import Question from "./Question";
+import ModalResult from "./ModalResult";
 
 const DetailQuiz = (props) => {
   const params = useParams();
   const location = useLocation();
   const quizId = params.id;
-
   const [dataQuiz, setDataQuiz] = useState([]);
   const [index, setIndex] = useState(0);
+
+  const [isShowModalResult, setIsShowModalResult] = useState(false);
+  const [dataModalResult, setDataModalResult] = useState({});
 
   useEffect(() => {
     fetchQuestions();
@@ -21,7 +24,6 @@ const DetailQuiz = (props) => {
     let res = await getDataQuiz(quizId);
     if (res && res.EC === 0) {
       let raw = res.DT;
-      console.log("Data check question", raw);
       let data = _.chain(raw)
         // Group the elements of Array based on `color` property
         .groupBy("id")
@@ -46,8 +48,6 @@ const DetailQuiz = (props) => {
       setDataQuiz(data);
     }
   };
-
-  console.log("Check data quiz", dataQuiz);
 
   const handlePrev = () => {
     if (index - 1 < 0) return;
@@ -74,8 +74,6 @@ const DetailQuiz = (props) => {
       });
 
       question.answers = b;
-
-      console.log(b);
     }
 
     let index = dataQuizClone.findIndex(
@@ -84,6 +82,60 @@ const DetailQuiz = (props) => {
     if (index > -1) {
       dataQuizClone[index] = question;
       setDataQuiz(dataQuizClone);
+    }
+  };
+
+  const handleFinishQuiz = async () => {
+    /* 
+    {
+    "quizId": 1,
+    "answers": [
+        { 
+            "questionId": 1,
+            "userAnswerId": [3]
+        },
+        { 
+            "questionId": 2,
+            "userAnswerId": [6]
+        }
+    ]
+    */
+    let payload = {
+      quizId: +quizId,
+      answers: [],
+    };
+    let answers = [];
+    if (dataQuiz && dataQuiz.length > 0) {
+      dataQuiz.forEach((question) => {
+        let questionId = question.questionId;
+        let userAnswerId = [];
+
+        question.answers.forEach((a) => {
+          if (a.isSelected === true) {
+            userAnswerId.push(a.id);
+          }
+        });
+
+        answers.push({
+          questionId: +questionId,
+          userAnswerId: userAnswerId,
+        });
+      });
+
+      payload.answers = answers;
+
+      // submit api
+      let res = await postSubmitQuiz(payload);
+      if (res && res.EC === 0) {
+        setDataModalResult({
+          countCorrect: res.DT.countCorrect,
+          countTotal: res.DT.countTotal,
+          quizData: res.DT.quizData,
+        });
+        setIsShowModalResult(true);
+      } else {
+        alert("Somethings wrongs...");
+      }
     }
   };
 
@@ -115,13 +167,22 @@ const DetailQuiz = (props) => {
           <button className="btn btn-primary" onClick={() => handleNext()}>
             Next
           </button>
-          <button className="btn btn-warning" onClick={() => handleNext()}>
+          <button
+            className="btn btn-warning"
+            onClick={() => handleFinishQuiz()}
+          >
             Finish
           </button>
         </div>
       </div>
 
       <div className="right-content">count down</div>
+
+      <ModalResult
+        show={isShowModalResult}
+        setShow={setIsShowModalResult}
+        dataModalResult={dataModalResult}
+      />
     </div>
   );
 };
