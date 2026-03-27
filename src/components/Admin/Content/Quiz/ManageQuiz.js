@@ -1,16 +1,43 @@
 import React, { useState } from "react";
 import "./ManageQuiz.scss";
 import Select from "react-select";
-import { postCreateNewQuiz } from "../../../../services/apiServices";
+import {
+  postCreateNewQuiz,
+  getAllQuizForAdmin,
+} from "../../../../services/apiServices";
 import { toast } from "react-toastify";
 import TableQuiz from "./TableQuiz";
 import Accordion from "react-bootstrap/Accordion";
+import ModaiUpdateQuizAdmin from "./ModaiUpdateQuizAdmin";
+import ModalDeleteQuizAdmin from "./ModalDeleteQuizAdmin";
 
-const ManageQuiz = () => {
+const ManageQuiz = (props) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [type, setType] = useState("EASY");
   const [image, setImage] = useState(null);
+  const [showModalUpdateQuiz, setShowModalUpdateQuiz] = useState(false);
+  const [showModalDeleteQuiz, setShowModalDeleteQuiz] = useState(false);
+  const [dataUpdate, setDataUpdate] = useState([]);
+  const [dataDelete, setDataDelete] = useState([]);
+  const [listQuiz, setListQuiz] = useState([]);
+
+  const handleShowUpdate = (item) => {
+    setDataUpdate(item);
+    setShowModalUpdateQuiz(true);
+  };
+
+  const handleShowDelete = (item) => {
+    setDataDelete(item);
+    setShowModalDeleteQuiz(true);
+  };
+
+  const fetchListQuiz = async () => {
+    let res = await getAllQuizForAdmin();
+    if (res.EC === 0) {
+      setListQuiz(res.DT);
+    }
+  };
 
   const options = [
     { value: "EASY", label: "EASY" },
@@ -103,8 +130,27 @@ const ManageQuiz = () => {
       </Accordion>
 
       <div className="list-detail">
-        <TableQuiz />
+        <TableQuiz
+          handleShowUpdate={handleShowUpdate}
+          handleShowDelete={handleShowDelete}
+          listQuiz={listQuiz}
+          setListQuiz={setListQuiz}
+        />
       </div>
+
+      <ModaiUpdateQuizAdmin
+        show={showModalUpdateQuiz}
+        setShow={setShowModalUpdateQuiz}
+        dataUpdate={dataUpdate}
+        fetchListQuiz={fetchListQuiz}
+      />
+
+      <ModalDeleteQuizAdmin
+        show={showModalDeleteQuiz}
+        setShow={setShowModalDeleteQuiz}
+        dataDelete={dataDelete}
+        fetchListQuiz={fetchListQuiz}
+      />
     </div>
   );
 };

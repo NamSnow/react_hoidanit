@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getAllQuizForAdmin } from "../../../../services/apiServices";
 
-const TableQuiz = () => {
-  const [listQuiz, setListQuiz] = useState([]);
+const TableQuiz = (props) => {
+  const { listQuiz, setListQuiz } = props;
 
   useEffect(() => {
     fetchQuiz();
@@ -20,7 +20,7 @@ const TableQuiz = () => {
     <>
       <div>List Quizzes</div>
 
-      <table class="table table-hover table-bordered my-2">
+      <table className="table table-hover table-bordered my-2">
         <thead>
           <tr>
             <th scope="col">ID</th>
@@ -35,14 +35,23 @@ const TableQuiz = () => {
             listQuiz.map((item, index) => {
               return (
                 <tr key={`table-quiz-${index}`}>
-                  <th scope="row">1</th>
                   <td>{item.id}</td>
                   <td>{item.name}</td>
                   <td>{item.description}</td>
                   <td>{item.difficulty}</td>
                   <td className="d-flex gap-4">
-                    <button className="btn btn-warning">Edit</button>
-                    <button className="btn btn-danger">Delete</button>
+                    <button
+                      className="btn btn-warning"
+                      onClick={() => props.handleShowUpdate(item)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => props.handleShowDelete(item)}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               );
