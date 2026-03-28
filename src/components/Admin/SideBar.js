@@ -55,7 +55,7 @@ const SideBar = (props) => {
             <MenuItem component={<Link to="/admin/manage-quizzes" />}>
               Quản lý Bài Quiz
             </MenuItem>
-            <MenuItem component={<Link to="/calendar" />}>
+            <MenuItem component={<Link to="/admin/manage-questions" />}>
               Quản lý Câu Hỏi
             </MenuItem>
           </SubMenu>
