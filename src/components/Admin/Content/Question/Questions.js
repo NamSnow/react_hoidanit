@@ -8,6 +8,8 @@ import { CiCirclePlus } from "react-icons/ci";
 import { LuImagePlus } from "react-icons/lu";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
+import Lightbox from "yet-another-react-lightbox";
+import Captions from "yet-another-react-lightbox/plugins/captions";
 
 const Questions = () => {
   const options = [
@@ -15,9 +17,6 @@ const Questions = () => {
     { value: "MEDIUM", label: "MEDIUM" },
     { value: "HARD", label: "HARD" },
   ];
-
-  const [selectedQuiz, setSelectedQuiz] = useState({});
-
   const [questions, setQuestions] = useState([
     {
       id: uuidv4(),
@@ -33,6 +32,13 @@ const Questions = () => {
       ],
     },
   ]);
+
+  const [selectedQuiz, setSelectedQuiz] = useState({});
+  const [isPreviewImage, setIsPreviewImage] = useState(false);
+  const [dataImagePreview, setDataImagePreview] = useState({
+    title: "",
+    src: "",
+  });
 
   const handleAddRemoveQuestion = (type, id) => {
     if (type === "ADD") {
@@ -131,9 +137,20 @@ const Questions = () => {
       event.target.files[0]
     ) {
       questionsClone[index].imageFile = event.target.files[0];
-      console.log("Check file: ", event.target.files[0]);
       questionsClone[index].imageName = event.target.files[0].name;
       setQuestions(questionsClone);
+    }
+  };
+
+  const handlePreviewImage = (questionId) => {
+    let questionsClone = _.cloneDeep(questions);
+    let index = questionsClone.findIndex((item) => item.id === questionId);
+    if (index > -1) {
+      setDataImagePreview({
+        src: URL.createObjectURL(questionsClone[index].imageFile),
+        title: questionsClone[index].imageName,
+      });
+      setIsPreviewImage(true);
     }
   };
 
@@ -195,9 +212,16 @@ const Questions = () => {
                     />
 
                     <span>
-                      {question.imageName
-                        ? question.imageName
-                        : "0 files is upload"}
+                      {question.imageName ? (
+                        <span
+                          style={{ cursor: "pointer" }}
+                          onClick={() => handlePreviewImage(question.id)}
+                        >
+                          {question.imageName}
+                        </span>
+                      ) : (
+                        "0 files is upload"
+                      )}
                     </span>
                   </div>
                   <div className="btn-add">
@@ -293,6 +317,14 @@ const Questions = () => {
               Save Questions
             </button>
           </div>
+        )}
+        {isPreviewImage === true && (
+          <Lightbox
+            open={isPreviewImage}
+            plugins={[Captions]}
+            close={() => setIsPreviewImage(false)}
+            slides={[dataImagePreview]}
+          ></Lightbox>
         )}
       </div>
     </div>
