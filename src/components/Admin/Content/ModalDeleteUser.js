@@ -27,8 +27,6 @@ const ModalDeleteUser = (props) => {
     }
   };
 
-  console.log("Dataupdate: ", dataDelete);
-
   return (
     <>
       <Modal

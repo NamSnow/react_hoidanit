@@ -15,24 +15,29 @@ import {
   postCreateNewQuestionForQuiz,
   postCreateNewAnswerForQuestion,
 } from "../../../../services/apiServices";
+import { toast } from "react-toastify";
 
 const Questions = () => {
-  const [questions, setQuestions] = useState([
+  const initQuestions = [
     {
       id: uuidv4(),
       description: "",
       imageFile: "",
       imageName: "",
+      isValidInitQs: false,
       answers: [
         {
           id: uuidv4(),
           description: "",
           isCorrect: false,
+          isValidInitAs: false,
         },
       ],
     },
-  ]);
+  ];
 
+  const [isValidCheckSelect, setIsValidCheckSelect] = useState(true);
+  const [questions, setQuestions] = useState(initQuestions);
   const [selectedQuiz, setSelectedQuiz] = useState({});
   const [isPreviewImage, setIsPreviewImage] = useState(false);
   const [dataImagePreview, setDataImagePreview] = useState({
@@ -121,6 +126,7 @@ const Questions = () => {
     // input question
     if (type === "QUESTION" && index > -1) {
       questionsClone[index].description = value;
+      questionsClone[index].isValidInitQs = false;
       setQuestions(questionsClone);
     }
 
@@ -135,6 +141,7 @@ const Questions = () => {
 
             if (type === "ANSWER") {
               answer.description = value;
+              answer.isValidInitAs = false;
             }
           }
           return answer;
@@ -173,37 +180,99 @@ const Questions = () => {
   };
 
   const handleSubmitQuestionForQuiz = async () => {
+    let questionsClone = _.cloneDeep(questions);
     console.log("questions: ", questions, selectedQuiz);
-    // postCreateNewQuestionForQuiz,
-    // postCreateNewAnswerForQuestion,
-    // todo
+
+    // validate select
+    if (_.isEmpty(selectedQuiz)) {
+      setIsValidCheckSelect(false);
+      toast.error("Please choose a Quiz");
+      return;
+    } else {
+      setIsValidCheckSelect(true);
+    }
+
+    // validate question
+    let isValidQ = true;
+    let indexQ1 = 0;
+    for (let i = 0; i < questionsClone.length; i++) {
+      if (!questionsClone[i].description) {
+        questionsClone[i].isValidInitQs = true;
+        setQuestions(questionsClone);
+        isValidQ = false;
+        indexQ1 = i;
+        break;
+      }
+    }
+
+    if (isValidQ === false) {
+      toast.error(`Not empty description for Question ${indexQ1 + 1}`);
+      return;
+    }
+
+    // validate answer
+    let isValidAnswer = true;
+    let indexQ = 0,
+      indexA = 0;
+    for (let i = 0; i < questionsClone.length; i++) {
+      for (let j = 0; j < questionsClone[i].answers.length; j++) {
+        if (!questionsClone[i].answers[j].description) {
+          questionsClone[i].answers[j].isValidInitAs = true;
+          setQuestions(questionsClone);
+          isValidAnswer = false;
+          indexA = j;
+          break;
+        }
+      }
+      indexQ = i;
+      if (isValidAnswer === false) break;
+    }
+
+    if (isValidAnswer === false) {
+      toast.error(`Not empty Answer ${indexA + 1} at Question ${indexQ + 1}`);
+      return;
+    }
 
     // validate data
+    for (const question of questions) {
+      const q = await postCreateNewQuestionForQuiz(
+        +selectedQuiz.value,
+        question.description,
+        question.imageFile,
+      );
+      for (const answer of question.answers) {
+        await postCreateNewAnswerForQuestion(
+          answer.description,
+          answer.isCorrect,
+          q?.DT?.id,
+        );
+      }
+    }
 
+    toast.success("Create questions and answers success!");
+    setQuestions(initQuestions);
     // submit questions
-    await Promise.all(
-      questions.map(async (question) => {
-        // submit questions
-        const q = await postCreateNewQuestionForQuiz(
-          +selectedQuiz.value,
-          question.description,
-          question.imageFile,
-        );
+    // await Promise.all(
+    //   questions.map(async (question) => {
+    //     // submit questions
+    //     const q = await postCreateNewQuestionForQuiz(
+    //       +selectedQuiz.value,
+    //       question.description,
+    //       question.imageFile,
+    //     );
 
-        // submit answer
-        await Promise.all(
-          question.answers.map((answer) => {
-            return postCreateNewAnswerForQuestion(
-              answer.description,
-              answer.isCorrect,
-              q?.DT?.id,
-            );
-          }),
-        );
-      }),
-    );
-
-    // submit answers
+    //     // submit answer
+    //     await Promise.all(
+    //       question.answers.map((answer) => {
+    //         return postCreateNewAnswerForQuestion(
+    //           answer.description,
+    //           answer.isCorrect,
+    //           q?.DT?.id,
+    //         );
+    //       }),
+    //     );
+    //   }),
+    // );
   };
 
   return (
@@ -220,6 +289,16 @@ const Questions = () => {
             menuPortalTarget={document.body}
             styles={{
               menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+              control: (base) => ({
+                ...base,
+                borderColor: isValidCheckSelect ? base.borderColor : "red",
+                boxShadow: isValidCheckSelect
+                  ? base.boxShadow
+                  : "0 0 0 1px red",
+                "&:hover": {
+                  borderColor: isValidCheckSelect ? base.borderColor : "red",
+                },
+              }),
             }}
           />
         </div>
@@ -235,7 +314,7 @@ const Questions = () => {
                   <div className="form-floating description">
                     <input
                       type="text"
-                      className="form-control"
+                      className={`form-control ${question.isValidInitQs === true ? "is-invalid" : ""} `}
                       placeholder="name@example.com"
                       value={question.description}
                       onChange={(event) =>
@@ -315,7 +394,7 @@ const Questions = () => {
                           <input
                             value={answer.description}
                             type="text"
-                            className="form-control"
+                            className={`form-control ${answer.isValidInitAs === true ? "is-invalid" : ""}`}
                             id="floatingInput"
                             placeholder="name@example.com"
                             onChange={(event) =>
