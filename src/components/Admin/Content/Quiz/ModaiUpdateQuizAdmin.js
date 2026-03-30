@@ -75,8 +75,6 @@ const ModaiUpdateQuizAdmin = (props) => {
       image,
     );
 
-    console.log("data update", data);
-
     if (data && data.EC === 0) {
       toast.success(data.EM);
       handleClose();
@@ -89,8 +87,6 @@ const ModaiUpdateQuizAdmin = (props) => {
       toast.error(data.EM);
     }
   };
-
-  console.log(dataUpdate);
 
   return (
     <>

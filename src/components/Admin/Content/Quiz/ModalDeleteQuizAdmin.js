@@ -14,8 +14,6 @@ const ModalDeleteQuizAdmin = (props) => {
   const handleSubmitDeleteQuizAdmin = async () => {
     let data = await deleteQuizAdmin(dataDelete.id);
 
-    console.log("data delete", data);
-
     if (data && data.EC === 0) {
       toast.success(data.EM);
       handleClose();
@@ -28,8 +26,6 @@ const ModalDeleteQuizAdmin = (props) => {
       toast.error(data.EM);
     }
   };
-
-  console.log(dataDelete);
 
   return (
     <>
