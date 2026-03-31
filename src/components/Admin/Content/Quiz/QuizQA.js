@@ -12,9 +12,8 @@ import Lightbox from "yet-another-react-lightbox";
 import Captions from "yet-another-react-lightbox/plugins/captions";
 import {
   getAllQuizForAdmin,
-  postCreateNewQuestionForQuiz,
-  postCreateNewAnswerForQuestion,
   getQuizWithQA,
+  postUpsertQA,
 } from "../../../../services/apiServices";
 import { toast } from "react-toastify";
 
@@ -250,15 +249,6 @@ const QuizQA = () => {
     // validate question
     let isValidQ = true;
     let indexQ1 = 0;
-    for (let i = 0; i < questionsClone.length; i++) {
-      if (!questionsClone[i].description) {
-        questionsClone[i].isValidInitQs = true;
-        setQuestions(questionsClone);
-        isValidQ = false;
-        indexQ1 = i;
-        break;
-      }
-    }
 
     if (isValidQ === false) {
       toast.error(`Not empty description for Question ${indexQ1 + 1}`);
@@ -269,66 +259,38 @@ const QuizQA = () => {
     let isValidAnswer = true;
     let indexQ = 0,
       indexA = 0;
-    for (let i = 0; i < questionsClone.length; i++) {
-      for (let j = 0; j < questionsClone[i].answers.length; j++) {
-        if (!questionsClone[i].answers[j].description) {
-          questionsClone[i].answers[j].isValidInitAs = true;
-          setQuestions(questionsClone);
-          isValidAnswer = false;
-          indexA = j;
-          break;
-        }
-      }
-      indexQ = i;
-      if (isValidAnswer === false) break;
-    }
 
     if (isValidAnswer === false) {
       toast.error(`Not empty Answer ${indexA + 1} at Question ${indexQ + 1}`);
       return;
     }
 
-    // validate data
-    for (const question of questions) {
-      const q = await postCreateNewQuestionForQuiz(
-        +selectedQuiz.value,
-        question.description,
-        question.imageFile,
-      );
-      for (const answer of question.answers) {
-        await postCreateNewAnswerForQuestion(
-          answer.description,
-          answer.isCorrect,
-          q?.DT?.id,
+    for (let i = 0; i < questionsClone.length; i++) {
+      if (questionsClone[i].imageFile) {
+        questionsClone[i].imageFile = await toBase64(
+          questionsClone[i].imageFile,
         );
       }
     }
 
-    toast.success("Create questions and answers success!");
-    setQuestions(initQuestions);
-    // submit questions
-    // await Promise.all(
-    //   questions.map(async (question) => {
-    //     // submit questions
-    //     const q = await postCreateNewQuestionForQuiz(
-    //       +selectedQuiz.value,
-    //       question.description,
-    //       question.imageFile,
-    //     );
+    let res = await postUpsertQA({
+      quizId: selectedQuiz.value,
+      questions: questionsClone,
+    });
 
-    //     // submit answer
-    //     await Promise.all(
-    //       question.answers.map((answer) => {
-    //         return postCreateNewAnswerForQuestion(
-    //           answer.description,
-    //           answer.isCorrect,
-    //           q?.DT?.id,
-    //         );
-    //       }),
-    //     );
-    //   }),
-    // );
+    if (res && res.EC === 0) {
+      toast.success(res.EM);
+      fetchQuizWithQA();
+    }
   };
+
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+    });
 
   return (
     <div className="questions-container">
