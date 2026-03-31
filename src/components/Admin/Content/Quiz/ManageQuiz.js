@@ -58,11 +58,11 @@ const ManageQuiz = (props) => {
     if (!name || !description) {
       toast.error("Name/Description is not required");
     }
-
     let res = await postCreateNewQuiz(description, name, type?.value, image);
     console.log(res);
     if (res && res.EC === 0) {
       toast.success(res.EM);
+      fetchListQuiz();
       setName("");
       setDescription("");
       setImage(null);
