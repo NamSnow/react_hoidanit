@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import _ from "lodash";
+import Lightbox from "yet-another-react-lightbox";
+import Captions from "yet-another-react-lightbox/plugins/captions";
 
 const Question = (props) => {
   const { data, index } = props;
+  const [isPreviewImage, setIsPreviewImage] = useState(false);
+
   if (_.isEmpty(data)) {
     return <></>;
   }
@@ -17,7 +21,19 @@ const Question = (props) => {
     <>
       {data.image ? (
         <div className="q-image">
-          <img src={`data:image/jpeg;base64,${data.image}`} />
+          <img
+            style={{ cursor: "pointer" }}
+            src={`data:image/jpeg;base64,${data.image}`}
+            onClick={() => setIsPreviewImage(true)}
+          />
+          {isPreviewImage === true && (
+            <Lightbox
+              open={isPreviewImage}
+              plugins={[Captions]}
+              close={() => setIsPreviewImage(false)}
+              slides={[{ src: `data:image/jpeg;base64,${data.image}` }]}
+            ></Lightbox>
+          )}
         </div>
       ) : (
         <div className="q-image"></div>
