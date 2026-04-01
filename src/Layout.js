@@ -13,7 +13,6 @@ import ListQuiz from "./components/User/ListQuiz";
 import DetailQuiz from "./components/User/DetailQuiz";
 import ManageQuiz from "./components/Admin/Content/Quiz/ManageQuiz";
 import Questions from "./components/Admin/Content/Question/Questions";
-import Test1 from "./components/routes/Test1";
 import PrivateRoute from "./components/routes/PrivateRoute";
 
 const NotFound = () => {
