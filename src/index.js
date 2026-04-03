@@ -13,6 +13,7 @@ import "nprogress/nprogress.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import "yet-another-react-lightbox/styles.css";
 import "yet-another-react-lightbox/plugins/captions.css";
+import i18n from "./utils/i18n";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

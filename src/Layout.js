@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import User from "./components/User/User";
 import Admin from "./components/Admin/Admin";
@@ -25,7 +25,7 @@ const NotFound = () => {
 
 const Layout = (props) => {
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<HomePage />} />
@@ -72,7 +72,7 @@ const Layout = (props) => {
         pauseOnHover
         theme="light"
       />
-    </>
+    </Suspense>
   );
 };
 
