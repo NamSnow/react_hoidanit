@@ -38,7 +38,7 @@ const Header = () => {
     <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
       <Container>
         <NavLink to="/" className="navbar-brand">
-          Hoi Dan IT
+          PHAM HOAI NAM
         </NavLink>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
