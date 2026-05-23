@@ -39,7 +39,7 @@ const SideBar = (props) => {
           }}
         >
           <DiReact size={"3em"} color={"00bfff"} />
-          <span onClick={() => navigate("/")}>Hoi Dan IT</span>
+          <span onClick={() => navigate("/")}>HOAI NAM</span>
         </div>
 
         <Menu iconShape="circle">

@@ -8,6 +8,7 @@ import { logOut } from "../../services/apiServices";
 import { toast } from "react-toastify";
 import { doLogOut } from "../../redux/action/userAction";
 import Language from "./Language";
+import { Breadcrumb } from "react-bootstrap";
 
 const Header = () => {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
@@ -41,7 +42,7 @@ const Header = () => {
           PHAM HOAI NAM
         </NavLink>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
+        <Navbar.Collapse id="responsive-navbar-nav" className="">
           <Nav className="me-auto">
             <NavLink to="/" className="nav-link">
               Home
@@ -53,6 +54,13 @@ const Header = () => {
               Admin
             </NavLink>
           </Nav>
+          {/* <Breadcrumb className="quiz-detail-new-header">
+            <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
+            <Breadcrumb.Item href="https://getbootstrap.com/docs/4.0/components/breadcrumb/">
+              Library
+            </Breadcrumb.Item>
+            <Breadcrumb.Item active>Data</Breadcrumb.Item>
+          </Breadcrumb> */}
 
           <Nav>
             {isAuthenticated === false ? (
